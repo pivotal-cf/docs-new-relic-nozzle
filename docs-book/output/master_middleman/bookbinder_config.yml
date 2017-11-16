@@ -1,0 +1,20 @@
+---
+:archive_menu:
+  ".": 
+:production_host: hello
+:subnav_templates:
+  new-relic-nozzle: new-relic-nozzle_subnav
+:template_variables: 
+:local_repo_dir: "/Users/shahram/pcf/update_20171110/docs-new-relic-nozzle"
+:workspace: !ruby/object:Pathname
+  path: "/Users/shahram/pcf/update_20171110/docs-new-relic-nozzle/docs-book/output/master_middleman/source"
+:feedback_enabled: 
+:repo_link_enabled: true
+:repo_links:
+  new-relic-nozzle:
+    repo: docs-content
+    ref: master
+    at_path: 
+:product_info:
+  new-relic-nozzle: {}
+:elastic_search: false
