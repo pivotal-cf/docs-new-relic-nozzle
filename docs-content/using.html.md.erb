@@ -1,15 +1,39 @@
 ---
-title: Using YOUR-PRODUCT-NAME
+title: Using New Relic Nozzle for PCF
 owner: Partners
 ---
 
-This topic describes how to use YOUR-PRODUCT-NAME.
+This topic describes how to use New Relic Nozzle for PCF.
 
-##<a id='using'></a> Using YOUR-PRODUCT-NAME
 
-**This topic should include any instructions for how to use the service or dashboard created by the tile. 
-Give procedures for how to perform the different functions offered by your product and provide screenshots where necessary.** 
+##<a id='using'></a> Using New Relic Nozzle for PCF
 
-**You can also use this section to include information about Architecture and Troubleshooting for known errors. 
-If you include a Troubleshooting section, follow the Symptom/Explanation format used in the 
-[Okta Troubleshooting](http://docs.pivotal.io/p-identity/okta/troubleshooting.html) topic**.
+Metrics and events that are collected by [PCF loggregator]() are visualized via dashboards in New Relic Insights. These dashboards are hightly filterable, and allow you to filter the data by various metrics. This would help you drill down to specifucs.
+
+For example in the **Container Metrics** dashboard you can filter the data by **CF Origins**, **Jobs**, and **IP address**. Then you can select the application ID to narrow down to the data coming only from the selected application. Furthermore, if you'd like to see the performance of one speciifc application container, you can easily select one of the application containers by clicking on the container index, and that would filter the data in the dashboard and drill down to the data for only one application container.
+
+
+##<a id='insights-queries'></a> Sample Insights Queries
+
+The **"Insights Event type"** used to store Firehose events is called **"PcfFirehoseEvent"**. Following are some NRQL strings you could use to extract events and metrics.
+
+```
+select count(*) from PcfFirehoseEvent since 1 day ago facet FirehoseEventType
+
+select count(*) from PcfFirehoseEvent since 1 day ago facet job timeseries
+
+select count(*) from PcfFirehoseEvent where job = 'diego_cell' since 1 day ago facet origin  timeseries
+
+select average(containerMetricCpuPercentage) from PcfFirehoseEvent facet containerMetricApplicationId timeseries
+
+select count(*) from  PcfFirehoseEvent where FirehoseEventType = 'HttpStartStop' facet httpStatusCode
+```
+
+Events from all PCF deployments end up in **"PcfFirehoseEvent"**. If you collect events from multiple PCF environments you can use **pcfDomain** and **pcfInstanceIp** metrics to distunguish between events from different PCF deploments (either in a **WHERE** clause or by **FACET**ing the events by **pcfDomain**).
+
+
+
+##<a id='insights-dashboards'></a> How to obtain Insights pre-built Dashboards
+
+Please contact your New Relic representative to import pre-built nozzle dashboards to your New Relic account.
+
