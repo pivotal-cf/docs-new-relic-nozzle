@@ -9,7 +9,7 @@ You can either install the New Relic Nozzle for PCF as a tile in Ops Mgr, or pus
 
 ##<a id='install-opsmgr'></a> Install and Configure New Relic Nozzle for PCF as a Tile in Ops Mgr
 
-1. Download the product file from Pivotal Network.
+1. Download the product file from [Pivotal Network](https://network.pivotal.io/products/nr-firehose-nozzle/).
 
 1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file. 
 
@@ -30,12 +30,19 @@ You can either install the New Relic Nozzle for PCF as a tile in Ops Mgr, or pus
     - New Relic RPM Account Id: YOUR-NEW-RELIC-RPM-ACCOUNT
     - New Relic Insights Insert Key: YOUR-NEW-RELIC-INSIGHTS-INSERT-KEY
     - UAA Url: YOUR-PCF-DEPLOYMENT'S-UAA-URL
+    - Nozzle instance: defaults to 3. specify between 1 to 6 instance(s) depending on the load of firehose events
     - Skip SSL Verification (True/false): Whether to verify SSL connection
     - UAA API User Account Name: YOUR-UAA-USER-NAME
     - UAA API User Account Password: YOUR-UAA-PASSWORD
     - Traffic Controller Url: TRAFFIC-CONTROLLER-URL-FOR-YOUR-PCF-DEPLOYMENT
     - Firehose Subscription Id: Unique Subscription Identifier (i.e. newrelic.firehose)
     - Selected Events: Comma-separated list of event types
+    - Excluded Deployments: Comma-separated list of deployments to exclude (optional)
+    - Excluded Origins: Comma-separated list of origins to exclude (optional)
+    - Excluded Jobs: Comma-separated list of jobs to exclude (optional)
+    - Admin User: <admin-user> with admin privileges to obtain all application details in all orgs/spaces
+    - Admin Password: <admin-password> password for the user with admin user
+    - App Detail Collection Interval: interval for querying application details (defaults to 1 minute)
 
   * If your environment uses a proxy server, add the following 2 environment variables:
 
@@ -46,26 +53,28 @@ You can either install the New Relic Nozzle for PCF as a tile in Ops Mgr, or pus
 
 ### Where to obtain Configuration Values ###
 
-The following properties can be obtained either from Ops Manager Elastic Runtime or from New Relic Insights:
+Following properties can be obtained either from Ops Manager Elastic Runtime or from New Relic Insights:
 
-   * User Name: Ops Mgr > Elastic Runtime > Credentials > Job > UAA > Opentsdb Nozzle Credentials > Link to Credential > identity
-   * Password: Ops Mgr > Elastic Runtime > Credentials > Job > UAA > Opentsdb Nozzle Credentials > Link to Credential > password
-   * UAA Url: https://uaa.<your-pcf-domain>  --  "cf curl /v2/info"
-   * Traffic Controller URL: wss://doppler.<pcf-domain>:<ssl-port>  --  "cf curl /v2/info"
+   * User Name: `Ops Mgr > Elastic Runtime > Credentials > Job > UAA > Opentsdb Nozzle Credentials > Link to Credential > identity`
+   * Password: `Ops Mgr > Elastic Runtime > Credentials > Job > UAA > Opentsdb Nozzle Credentials > Link to Credential > password`
+   * UAA Url: `https://uaa.<your-pcf-domain>`  --  "cf curl /v2/info"
+   * Traffic Controller URL: `wss://doppler.<pcf-domain>:<ssl-port>`  --  "cf curl /v2/info"
    * Firehose Subscription ID: A unique Id (i.e. newrelic.firehose)
-   * Skip SSL: If SSL is disabled this is value should be set to "true"
+   * Skip SSL: If SSL is disabled this value should be set to "true"
    * Selected Events: A comma-separated list of any of the following firehose event types:
     - ValueMetric
     - CounterEvent
     - ContainerMetric
     - HttpStartStop
     - LogMessage
-   * Insights Base URL: https://insights-collector.newrelic.com/<API-Version> (API version is currently v1)
-   * Insights RPM ID: The first number that you find in your RPM Url (i.e. https://insights.newrelic.com/accounts/<rpm-id>/...)
-   * Insights Insert Key: An "Insert Key" from https://insights.newrelic.com/accounts/<rpm-id>/manage/api_keys. 
+   * Insights Base URL: `https://insights-collector.newrelic.com/<API-Version>` (API version is currently v1)
+   * Insights RPM ID: The first number that you find in your RPM Url (i.e. `https://insights.newrelic.com/accounts/<rpm-id>/...`)
+   * Insights Insert Key: An "Insert Key" from `https://insights.newrelic.com/accounts/<rpm-id>/manage/api_keys`.
+   * Admin User Name: `"Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> identity"`
+   * Admin Password: `"Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> password"`
 
 1. As an admin user in the New Relic UI, you can go to **New Relic Insights** > **Manage Data** > **API Keys** 
-to create an "Insert Key." You can use an existing key if you have one, or you can create a fresh insert key specifically for this purpose.
+to obtain an "Insert Key." If you have an existing key, you can use it, or if you do not already have one you can create a fresh insert key specifically for this purpose.
 
 1. Click **"Save**. 
 
@@ -92,18 +101,25 @@ When pushed as an application, you need to have a manifest with the following pr
 	    NOZZLE_FIREHOSE_SUBSCRIPTION_ID: newrelic.firehose
 	    NOZZLE_SKIP_SSL: true/false
 	    NOZZLE_SELECTED_EVENTS: Comma-separated list of event types
+        NOZZLE_EXCLUDED_DEPLOYMENTS: Comma-separated list of deployments to exclude (optional)
+        NOZZLE_EXCLUDED_ORIGINS: Comma-separated list of origins to exclude (optional)
+        NOZZLE_EXCLUDED_JOBS: Comma-separated list of jobs to exclude (optional)
+        NOZZLE_ADMIN_USER: <admin-user> with admin privileges to obtain all application details in all orgs/spaces
+        NOZZLE_ADMIN_PASSWORD: <admin-password> password for the user with admin privileges
+        NOZZLE_APP_DETAIL_INTERVAL: interval for querying application details (defaults to 1 minute)
 	    NEWRELIC_INSIGHTS_BASE_URL: https://insights-collector.newrelic.com/v1
 	    NEWRELIC_INSIGHTS_RPM_ID: NEW-RELIC-RPM-ACCOUNT-ID
 	    NEWRELIC_INSIGHTS_INSERT_KEY: INSIGHTS-INSERT-KEY
-        # http_proxy: PROXY-SERVER-ADDRESS:PORT
-        # no_proxy: COMMA-SEPARATED-LIST-OF-SERVERS-TO-BYPASS-PROXY
+
+      # http_proxy: PROXY-SERVER-ADDRESS:PORT
+      # no_proxy: COMMA-SEPARATED-LIST-OF-SERVERS-TO-BYPASS-PROXY
 
 
 <p class="note"><strong>Note:</strong> In order to automate the <strong>cf push</strong> deployment process as much as possible, create an application <strong>manifest.yml</strong> file. Update the manifest as required for your environment. 
 Make sure to assign proper values to all required environment variables. Any property values 
 within angle brackets need to be changed to correct values for your environment.</p>
 
-<p class="note"><strong>Note:</strong> When you're pushing the nozzle as an app, the <strong>product</strong> and <strong>release</strong> folders are not required. Make sure to remove these folders from the directory where you run <strong>cf push</strong> to reduce the size of the upload.
+<p class="note"><strong>Note:</strong> When you're pushing the nozzle as an app, the <strong>product</strong> and <strong>release</strong> folders are not required. Make sure to remove these folders from the directory where you run <strong>cf push</strong> to reduce the size of the upload, or use <strong>.cfignore</strong> file.
 
 ###<a id='app-build'></a> Application Build & Deploy
 
