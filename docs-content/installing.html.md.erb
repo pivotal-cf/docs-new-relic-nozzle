@@ -5,9 +5,9 @@ owner: Partners
 
 This topic describes how to install and configure New Relic Nozzle for Pivotal Cloud Foundry (PCF).
 
-You can either install the New Relic Nozzle for PCF as a tile in Ops Mgr, or push it as a regular application.
+You can either install the New Relic Nozzle for PCF as a tile in Ops Manager, or push it as a regular application.
 
-##<a id='install-opsmgr'></a> Install and Configure New Relic Nozzle for PCF as a Tile in Ops Mgr
+## <a id='install-opsmgr'></a> Install and Configure New Relic Nozzle for PCF as a Tile in Ops Manager
 
 1. Download the product file from [Pivotal Network](https://network.pivotal.io/products/nr-firehose-nozzle/).
 
@@ -19,23 +19,21 @@ You can either install the New Relic Nozzle for PCF as a tile in Ops Mgr, or pus
 
 1. Follow the steps below to configure the nozzle tile:
 
-  * Under **New Relic Firehose Nozzle** tile > **Settings** > **Assign AZs and Networks:**
-
+  * Under **New Relic Firehose Nozzle > Settings > Assign AZs and Networks:**
     - Select your desired networks.
-    - Click "Save"
+    - Click **Save**.
 
-  * Under **New Relic Firehose Nozzle** tile > **Settings** > **New Relic Firehose Nozzle** set the following fields:
-
-    - New RelicInsights Base Url: https://insights-collector.newrelic.com/v1
-    - New Relic RPM Account Id: YOUR-NEW-RELIC-RPM-ACCOUNT
-    - New Relic Insights Insert Key: YOUR-NEW-RELIC-INSIGHTS-INSERT-KEY
-    - UAA Url: YOUR-PCF-DEPLOYMENT'S-UAA-URL
-    - Nozzle instance: defaults to 3. specify between 1 to 6 instance(s) depending on the load of firehose events
+  * Under **New Relic Firehose Nozzle > Settings > New Relic Firehose Nozzle**, set the following fields:
+    - New RelicInsights Base URL: `https://insights-collector.newrelic.com/v1`
+    - New Relic RPM Account ID: `YOUR-NEW-RELIC-RPM-ACCOUNT`
+    - New Relic Insights Insert Key: `YOUR-NEW-RELIC-INSIGHTS-INSERT-KEY`
+    - UAA Url: `YOUR-PCF-DEPLOYMENT'S-UAA-URL`
+    - Nozzle instance: defaults to 3. Specify between 1 to 6 instance(s) depending on the load of Firehose events.
     - Skip SSL Verification (True/false): Whether to verify SSL connection
-    - UAA API User Account Name: YOUR-UAA-USER-NAME
-    - UAA API User Account Password: YOUR-UAA-PASSWORD
-    - Traffic Controller Url: TRAFFIC-CONTROLLER-URL-FOR-YOUR-PCF-DEPLOYMENT
-    - Firehose Subscription Id: Unique Subscription Identifier (i.e. newrelic.firehose)
+    - UAA API User Account Name: `YOUR-UAA-USER-NAME`
+    - UAA API User Account Password: `YOUR-UAA-PASSWORD`
+    - Traffic Controller URL: `TRAFFIC-CONTROLLER-URL-FOR-YOUR-PCF-DEPLOYMENT`
+    - Firehose Subscription ID: Unique Subscription Identifier (i.e. `newrelic.firehose`)
     - Selected Events: Comma-separated list of event types
     - Excluded Deployments: Comma-separated list of deployments to exclude (optional)
     - Excluded Origins: Comma-separated list of origins to exclude (optional)
@@ -44,24 +42,23 @@ You can either install the New Relic Nozzle for PCF as a tile in Ops Mgr, or pus
     - Admin Password: <admin-password> password for the user with admin user
     - App Detail Collection Interval: interval for querying application details (defaults to 1 minute)
 
-  * If your environment uses a proxy server, add the following 2 environment variables:
-
-    - http_proxy: **proxy server address:port**
-    - no_proxy: **comma separated list of servers to bypass proxy**
+  * If your environment uses a proxy server, add the following environment variables:
+    - `http_proxy`: `proxy server address:port`
+    - `no_proxy`: comma-separated list of servers to bypass proxy
 
 <br/>
 
-### Where to Obtain Configuration Values ###
+### <a id='obtain-config-values'></a> Where to Obtain Configuration Values
 
 The following properties can be obtained either from Ops Manager Elastic Runtime or from New Relic Insights:
 
    * User Name: `Ops Mgr > Elastic Runtime > Credentials > Job > UAA > Opentsdb Nozzle Credentials > Link to Credential > identity`
    * Password: `Ops Mgr > Elastic Runtime > Credentials > Job > UAA > Opentsdb Nozzle Credentials > Link to Credential > password`
-   * UAA Url: `https://uaa.<your-pcf-domain>`  --  "cf curl /v2/info"
-   * Traffic Controller URL: `wss://doppler.<pcf-domain>:<ssl-port>`  --  "cf curl /v2/info"
-   * Firehose Subscription ID: A unique Id (i.e. newrelic.firehose)
-   * Skip SSL: If SSL is disabled this value should be set to "true"
-   * Selected Events: A comma-separated list of any of the following firehose event types:
+   * UAA URL: `https://uaa.<your-pcf-domain>`  --  `cf curl /v2/info`
+   * Traffic Controller URL: `wss://doppler.<pcf-domain>:<ssl-port>`  --  `cf curl /v2/info`
+   * Firehose Subscription ID: A unique ID (i.e. `newrelic.firehose`)
+   * Skip SSL: If SSL is disabled, this value should be set to `true`.
+   * Selected Events: A comma-separated list of any of the following Firehose event types:
     - ValueMetric
     - CounterEvent
     - ContainerMetric
@@ -69,21 +66,21 @@ The following properties can be obtained either from Ops Manager Elastic Runtime
     - LogMessage
    * Insights Base URL: `https://insights-collector.newrelic.com/<API-Version>` (API version is currently v1)
    * Insights RPM ID: The first number that you find in your RPM Url (i.e. `https://insights.newrelic.com/accounts/<rpm-id>/...`)
-   * Insights Insert Key: An "Insert Key" from `https://insights.newrelic.com/accounts/<rpm-id>/manage/api_keys`.
-   * Admin User Name: `"Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> identity"`
-   * Admin Password: `"Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> password"`
+   * Insights Insert Key: An insert key from `https://insights.newrelic.com/accounts/<rpm-id>/manage/api_keys`.
+   * Admin User Name: `Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> identity`
+   * Admin Password: `Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> password`
 
-1. As an admin user in the New Relic UI, you can go to **New Relic Insights** > **Manage Data** > **API Keys** 
-to obtain an "Insert Key." If you have an existing key, you can use it, or if you do not already have one you can create a fresh insert key specifically for this purpose.
+1. As an admin user in the New Relic UI, you can go to **New Relic Insights > Manage Data > API Keys** 
+to obtain an insert key. If you have an existing key, you can use it. If you do not already have one, you can create a fresh insert key specifically for this purpose.
 
 1. Click **"Save**. 
 
-1. Return to the Ops Manager Installation Dashboard, and click **Apply changes** to install New Relic Nozzle for PCF tile.
+1. Return to the Ops Manager Installation Dashboard and click **Apply changes**.
 
 
-##<a id='install-app'></a> Install and Configure New Relic Nozzle for PCF as an application
+## <a id='install-app'></a> Install and Configure New Relic Nozzle for PCF as an Application
 
-When pushed as an application, you need to have a manifest with the following properties:
+When pushing New Relic Nozzle for PCF as an application, you need to have a manifest with the following properties:
 
 	---
 	applications:
@@ -115,13 +112,12 @@ When pushed as an application, you need to have a manifest with the following pr
       # no_proxy: COMMA-SEPARATED-LIST-OF-SERVERS-TO-BYPASS-PROXY
 
 
-<p class="note"><strong>Note:</strong> In order to automate the <strong>cf push</strong> deployment process as much as possible, create an application <strong>manifest.yml</strong> file. Update the manifest as required for your environment. 
-Make sure to assign proper values to all required environment variables. Any property values 
-within angle brackets need to be changed to correct values for your environment.</p>
+<p class="note"><strong>Note:</strong> In order to automate the <code>cf push</code> deployment process as much as possible, create an application <code>manifest.yml</code> file. Update the manifest as required for your environment. 
+Make sure to assign proper values to all required environment variables. Any property values within angle brackets need to be changed to the correct values for your environment.</p>
 
-<p class="note"><strong>Note:</strong> When you're pushing the nozzle as an app, the <strong>product</strong> and <strong>release</strong> folders are not required. Make sure to remove these folders from the directory where you run <strong>cf push</strong> to reduce the size of the upload, or use <strong>.cfignore</strong> file.
+<p class="note"><strong>Note:</strong> When you're pushing the nozzle as an app, the <strong>product</strong> and <strong>release</strong> folders are not required. Make sure to remove these folders from the directory where you run <strong>cf push</strong> to reduce the size of the upload, or use <strong>.cfignore</strong> file.</p>
 
-###<a id='app-build'></a> Application Build & Deploy
+### <a id='app-build'></a> Application Build and Deploy
 
 The application is already built and ready to run on PCF. If you make any changes to the code, or would like to run on other operating systems, you can rebuild the binary.
 
@@ -130,25 +126,22 @@ $ env GOOS=&lt;OS-name&gt; GOARCH=amd64 go build -o nr-nozzle
 $ cf push
 </pre>
 
-You can obtain a complete list of valid **OS-name** and **ARCH** types from [Go Lang docs](https://golang.org/doc/install/source).
+You can obtain a complete list of valid `OS-name` and `ARCH` types from [Go Lang docs](https://golang.org/doc/install/source).
 
-Once you build the binary and update the **manifest.yml** file with proper values, you can **cf push** the tile as an application.
+Once you build the binary and update the `manifest.yml` file with proper values, you can `cf push` the tile as an application.
 
-##<a id='using-proxy'></a> Using Proxy Servers
+## <a id='using-proxy'></a> Using Proxy Servers
 
-If you need to use a proxy server in your environment, use the following 2 environment variables
+If you need to use a proxy server in your environment, use the following environment variables:
 
-* **http_proxy**
-* **no_proxy**
+* `http_proxy`
+* `no_proxy`
 
 You can specify the values for these properties during the setup of the tile in Ops Manager. 
-If you use the app version of the Nozzle (running by `cf push`), you can set these environment variables at the end of the manifest.yml in the **env** section, or you can set them directly by running **cf set-env** as a CLI command.
+If you use the app version of the Nozzle (running by `cf push`), you can set these environment variables at the end of the manifest.yml in the **env** section, or you can set them directly by running `cf set-env` as a CLI command.
 
-###Notes###
+### <a id='notes'></a> Notes
    
->* These environment variables must be in lower case
->* You need to set **http_proxy** to your proxy server address and port (i.e. `http://my_proxyserver:my_proxy_port`)
->* You need to set **no_proxy** to any address that you need to bypass. In order for the nozzle to work properly with proxies, you must bypass the **doppler** server (doppler.YOUR-PCF-DOMAIN.com). Make sure you do not include the protocol and the port for no_proxy. Just add the server name.
-
-
-
+* These environment variables must be in lower case.
+* You need to set `http_proxy` to your proxy server address and port (i.e. `http://my_proxyserver:my_proxy_port`).
+* You need to set `no_proxy` to any address that you need to bypass. In order for the nozzle to work properly with proxies, you must bypass the `doppler` server (`doppler.YOUR-PCF-DOMAIN.com`). Make sure you do not include the protocol and the port for `no_proxy`. Just add the server name.
