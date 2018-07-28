@@ -5,16 +5,17 @@ owner: Partners
 
 This topic describes how to use New Relic Nozzle for Pivotal Cloud Foundry (PCF).
 
-##<a id='using'></a> Using New Relic Nozzle for PCF
+
+## <a id='using'></a> Using New Relic Nozzle for PCF
 
 Metrics and events the PCF Loggregator Firehose collects are visualized in dashboards in New Relic Insights. These dashboards allow you to filter the data by various metrics.
 
-For example, in the **Container Metrics** dashboard, you can filter the data by **CF Origins**, **Jobs**, and **IP address**. Then you can select an application ID to narrow down to the data coming only from one application. Furthermore, if you'd like to see the performance of one application container, you can select one of the containers by clicking on the container index, filtering the data in the dashboard, and drilling down to the data for only one application container.
+For example, in the **Container Metrics** dashboard, you can filter the data by **CF Origins**, **Jobs**, and **IP address**. Then you can select an application ID to narrow down to the data coming only from one application. Furthermore, if you would like to see the performance of one application container, you can select one of the containers by clicking on the container index, filtering the data in the dashboard, and drilling down to the data for only one application container.
 
-##<a id='insights-queries'></a> Sample Insights Queries
 
-The **Insights Event type** used to store Firehose events is called **PcfFirehoseEvent**. 
-The following are some NRQL strings that can be used to extract events and metrics:
+## <a id='insights-queries'></a> Sample Insights Queries
+
+The **Insights Event type** used to store Firehose events is called **PcfFirehoseEvent**. The following are some NRQL strings that can be used to extract events and metrics:
 
 ```
 select count(*) from PcfFirehoseEvent since 1 day ago facet FirehoseEventType
@@ -30,6 +31,7 @@ select count(*) from  PcfFirehoseEvent where FirehoseEventType = 'HttpStartStop'
 
 Events from all PCF deployments end up in **PcfFirehoseEvent**. If you collect events from multiple PCF environments, you can use **pcfDomain** and **pcfInstanceIp** metrics to distunguish between events from different PCF deploments (either in a **WHERE** clause or by **FACET**ing the events by **pcfDomain**).
 
-##<a id='insights-dashboards'></a> How to obtain Insights pre-built Dashboards
 
-Please contact your New Relic representative to import pre-built nozzle dashboards to your New Relic account.
+## <a id='insights-dashboards'></a> Obtaining Insights Pre-Built Dashboards
+
+Contact your New Relic representative to import pre-built nozzle dashboards to your New Relic account.
