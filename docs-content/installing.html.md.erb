@@ -23,9 +23,10 @@ You can either install the New Relic Nozzle for PCF as a tile in Ops Manager, or
     - Select your desired networks.
     - Click **Save**.
   * Under **New Relic Firehose Nozzle > Settings > New Relic Firehose Nozzle**, set the following fields:
-    - New RelicInsights Base URL: `https://insights-collector.newrelic.com/v1`
+    - New Relic Insights Base URL: `https://insights-collector.newrelic.com/v1`
     - New Relic RPM Account ID: `YOUR-NEW-RELIC-RPM-ACCOUNT`
     - New Relic Insights Insert Key: `YOUR-NEW-RELIC-INSIGHTS-INSERT-KEY`
+    - New Relic Insights Maximum Number of Events: A value between 50 and 950 (Default is 500)
     - UAA Url: `YOUR-PCF-DEPLOYMENT'S-UAA-URL`
     - Nozzle instance: defaults to 3. Specify between 1 to 6 instance(s) depending on the load of Firehose events.
     - Skip SSL Verification (True/false): Whether to verify SSL connection
@@ -106,6 +107,8 @@ When pushing New Relic Nozzle for PCF as an application, you need to have a mani
         NEWRELIC_INSIGHTS_BASE_URL: https://insights-collector.newrelic.com/v1
         NEWRELIC_INSIGHTS_RPM_ID: NEW-RELIC-RPM-ACCOUNT-ID
         NEWRELIC_INSIGHTS_INSERT_KEY: INSIGHTS-INSERT-KEY
+        NEWRELIC_NOZZLE_VERSION: 1.1.13    # current version
+        NEWRELIC_INSIGHTS_MAX_EVENTS: 500  # range 50 - 950 - default value is 500 - If sending LogMessage events, do not increase this value
 
         # http_proxy: PROXY-SERVER-ADDRESS:PORT
         # no_proxy: COMMA-SEPARATED-LIST-OF-SERVERS-TO-BYPASS-PROXY
