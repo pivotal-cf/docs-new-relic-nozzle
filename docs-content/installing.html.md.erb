@@ -51,11 +51,10 @@ You can either install the New Relic Nozzle for PCF as a tile in Ops Manager, or
     - ValueMetric Jobs Inclusion Filters: Select from pull down list of ValueMetric jobs to include (optional)
     - ValueMetric Metric Name Inclusion Filters: Select from pull down list of ValueMetric Names to include (optional)
 
-<br/>
-
 ### <a id='obtain-config-values'></a> Where to Obtain Configuration Values
 
 The following properties can be obtained either from Ops Manager Elastic Runtime or from New Relic Insights:
+
    * User Name: `Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> identity`
    * Password: `Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> password`
    * UAA URL: `https://uaa.<your-pcf-domain>`  --  `cf curl /v2/info`
@@ -76,7 +75,7 @@ The following properties can be obtained either from Ops Manager Elastic Runtime
 
 1. As an admin user in the New Relic UI, you can go to **New Relic Insights > Manage Data > API Keys** to obtain an insert key. If you have an existing key, you can use it. If you do not already have one, you can create a fresh insert key specifically for this purpose.
 
-1. Click **"Save**. 
+1. Click **Save**. 
 
 1. Return to the Ops Manager Installation Dashboard and click **Apply Changes**.
 
