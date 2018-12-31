@@ -35,8 +35,8 @@ You can either install the New Relic Nozzle for PCF as a tile in Ops Manager, or
     - Traffic Controller URL: `TRAFFIC-CONTROLLER-URL-FOR-YOUR-PCF-DEPLOYMENT`
     - Firehose Subscription ID: Unique Subscription Identifier (i.e. `newrelic.firehose`)
     - Selected Events: Comma-separated list of event types
-    - Admin User: <admin-user> with admin privileges to obtain all application details in all orgs/spaces
-    - Admin Password: <admin-password> password for the user with admin user
+    - Admin User: ADMIN-USER with admin privileges to obtain all application details in all orgs/spaces
+    - Admin Password: ADMIN-PASSWORD password for the user with admin user
     - App Detail Collection Interval: interval for querying application details (defaults to 1 minute)
   * If your environment uses a proxy server, add the following environment variables:
     - `http_proxy`: `proxy server address:port`
@@ -57,8 +57,8 @@ The following properties can be obtained either from Ops Manager Elastic Runtime
 
    * User Name: `Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> identity`
    * Password: `Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> password`
-   * UAA URL: `https://uaa.<your-pcf-domain>`  --  `cf curl /v2/info`
-   * Traffic Controller URL: `wss://doppler.<pcf-domain>:<ssl-port>`  --  `cf curl /v2/info`
+   * UAA URL: `https://uaa.YOUR-PCF-DOMAIN`  --  `cf curl /v2/info`
+   * Traffic Controller URL: `wss://doppler.PCF-DOMAIN:SSL-PORT`  --  `cf curl /v2/info`
    * Firehose Subscription ID: A unique ID (i.e. `newrelic.firehose`)
    * Skip SSL: If SSL is disabled, this value should be set to `true`.
    * Selected Events: A comma-separated list of any of the following Firehose event types:
@@ -67,9 +67,9 @@ The following properties can be obtained either from Ops Manager Elastic Runtime
     - ContainerMetric
     - HttpStartStop
     - LogMessage
-   * Insights Base URL: `https://insights-collector.newrelic.com/<API-Version>` (API version is currently v1)
-   * Insights RPM ID: The first number that you find in your RPM Url (i.e. `https://insights.newrelic.com/accounts/<rpm-id>/...`)
-   * Insights Insert Key: An insert key from `https://insights.newrelic.com/accounts/<rpm-id>/manage/api_keys`.
+   * Insights Base URL: `https://insights-collector.newrelic.com/API-VERSION` (API version is currently v1)
+   * Insights RPM ID: The first number that you find in your RPM Url (i.e. `https://insights.newrelic.com/accounts/RPM-ID/...`)
+   * Insights Insert Key: An insert key from `https://insights.newrelic.com/accounts/RPM-ID/manage/api_keys`.
    * Admin User Name: `Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> identity`
    * Admin Password: `Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> password`
 
@@ -100,8 +100,8 @@ When pushing New Relic Nozzle for PCF as an application, you need to have a mani
         NOZZLE_FIREHOSE_SUBSCRIPTION_ID: newrelic.firehose
         NOZZLE_SKIP_SSL: true/false
         NOZZLE_SELECTED_EVENTS: Comma-separated list of event types
-        NOZZLE_ADMIN_USER: <admin-user> with admin privileges to obtain all application details in all orgs/spaces
-        NOZZLE_ADMIN_PASSWORD: <admin-password> password for the user with admin privileges
+        NOZZLE_ADMIN_USER: ADMIN-USER with admin privileges to obtain all application details in all orgs/spaces
+        NOZZLE_ADMIN_PASSWORD: ADMIN-PASSWORD password for the user with admin privileges
         NOZZLE_APP_DETAIL_INTERVAL: interval for querying application details (defaults to 1 minute)
         NEWRELIC_INSIGHTS_BASE_URL: https://insights-collector.newrelic.com/v1
         NEWRELIC_INSIGHTS_RPM_ID: NEW-RELIC-RPM-ACCOUNT-ID
