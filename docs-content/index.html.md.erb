@@ -44,12 +44,17 @@ Due to a large number of events being streamed from the Firehose, in some cases 
 
 If you need any of the Firehose event types (`"ValueMetric"`, `"CounterEvent"`, `"ContainerMetric"`, `"HttpStartStop"`, `"LogMessage"`, `"Error"`) to be captured by the nozzle and pushed to New Relic Insights, you must specify them as a comma-separated list of event types in the `"Selected Events"` property in **New Relic Firehose Nozzle** tab of the tile configuration.
 
-You can use `"Global Exclusions"` in **New Relic Firehose Nozzle Global Exclusion Filters** tab to exclude a subset of the captured events based on the following event properties:
+You can use `"Global Exclusions"` in **New Relic Firehose Nozzle Global Exclusion Filters** tab
+to exclude a subset of the captured events based on the following event properties:
+
 * Deployment name of events
 * Job name of events
 * Origin name of events
 
-On top of the exclusions, you can still override them by specifying a subset of the excluded events to be included for `"ValueMetric"` event types in **New Relic Firehose Nozzle ValueMetric Inclusion Filters** tab based on the following event properties:
+On top of the exclusions, you can still override them by specifying a subset of the excluded events
+to be included for `"ValueMetric"` event types in **New Relic Firehose Nozzle ValueMetric Inclusion Filters**
+tab based on the following event properties:
+
 * Deployment name of ValueMetric events
 * Job name of ValueMetric events
 * Origin name of ValueMetric events
@@ -64,8 +69,6 @@ On top of the exclusions, you can still override them by specifying a subset of 
 
 
 ## <a id="snapshot"></a> Product Snapshot
-
-<p class='note'><strong>Note:</strong> As of PCF v2.0, Elastic Runtime is renamed Pivotal Application Service (PAS).</p>
 
 The following table provides version and version-support information about New Relic Nozzle for PCF.
 
