@@ -53,10 +53,10 @@ You can either install the New Relic Nozzle for PCF as a tile in Ops Manager, or
 
 ### <a id='obtain-config-values'></a> Where to Obtain Configuration Values
 
-The following properties can be obtained either from Ops Manager Elastic Runtime or from New Relic Insights:
+The following properties can be obtained either from Pivotal Application Service or from New Relic Insights:
 
-   * User Name: `Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> identity`
-   * Password: `Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> password`
+   * User Name: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> identity`
+   * Password: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> password`
    * UAA URL: `https://uaa.YOUR-PCF-DOMAIN`  --  `cf curl /v2/info`
    * Traffic Controller URL: `wss://doppler.PCF-DOMAIN:SSL-PORT`  --  `cf curl /v2/info`
    * Firehose Subscription ID: A unique ID (i.e. `newrelic.firehose`)
@@ -70,8 +70,8 @@ The following properties can be obtained either from Ops Manager Elastic Runtime
    * Insights Base URL: `https://insights-collector.newrelic.com/API-VERSION` (API version is currently v1)
    * Insights RPM ID: The first number that you find in your RPM Url (i.e. `https://insights.newrelic.com/accounts/RPM-ID/...`)
    * Insights Insert Key: An insert key from `https://insights.newrelic.com/accounts/RPM-ID/manage/api_keys`.
-   * Admin User Name: `Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> identity`
-   * Admin Password: `Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> password`
+   * Admin User Name: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> identity`
+   * Admin Password: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> password`
 
 1. As an admin user in the New Relic UI, you can go to **New Relic Insights > Manage Data > API Keys** to obtain an insert key. If you have an existing key, you can use it. If you do not already have one, you can create a fresh insert key specifically for this purpose.
 
@@ -106,7 +106,7 @@ When pushing New Relic Nozzle for PCF as an application, you need to have a mani
         NEWRELIC_INSIGHTS_BASE_URL: https://insights-collector.newrelic.com/v1
         NEWRELIC_INSIGHTS_RPM_ID: NEW-RELIC-RPM-ACCOUNT-ID
         NEWRELIC_INSIGHTS_INSERT_KEY: INSIGHTS-INSERT-KEY
-        NEWRELIC_NOZZLE_VERSION: 1.1.13    # current version
+        NEWRELIC_NOZZLE_VERSION: 1.1.15    # current version
         NEWRELIC_INSIGHTS_MAX_EVENTS: 500  # range 50 - 950 - default value is 500 - If sending LogMessage events, do not increase this value
 
         # http_proxy: PROXY-SERVER-ADDRESS:PORT
