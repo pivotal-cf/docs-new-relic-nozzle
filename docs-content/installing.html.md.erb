@@ -27,16 +27,10 @@ You can either install the New Relic Nozzle for PCF as a tile in Ops Manager, or
     - New Relic RPM Account ID: `YOUR-NEW-RELIC-RPM-ACCOUNT`
     - New Relic Insights Insert Key: `YOUR-NEW-RELIC-INSIGHTS-INSERT-KEY`
     - New Relic Insights Maximum Number of Events: A value between 50 and 950 (Default is 500)
-    - UAA Url: `YOUR-PCF-DEPLOYMENT'S-UAA-URL`
     - Nozzle instance: defaults to 3. Specify between 1 to 20 instance(s) depending on the load of Firehose events.
     - Skip SSL Verification (True/false): Whether to verify SSL connection
-    - UAA API User Account Name: `YOUR-UAA-USER-NAME`
-    - UAA API User Account Password: `YOUR-UAA-PASSWORD`
-    - Traffic Controller URL: `TRAFFIC-CONTROLLER-URL-FOR-YOUR-PCF-DEPLOYMENT`
     - Firehose Subscription ID: Unique Subscription Identifier (i.e. `newrelic.firehose`)
     - Selected Events: Comma-separated list of event types
-    - Admin User: ADMIN-USER with admin privileges to obtain all application details in all orgs/spaces
-    - Admin Password: ADMIN-PASSWORD password for the user with admin user
     - App Detail Collection Interval: interval for querying application details (defaults to 1 minute)
   * If your environment uses a proxy server, add the following environment variables:
     - `http_proxy`: `proxy server address:port`
@@ -55,10 +49,6 @@ You can either install the New Relic Nozzle for PCF as a tile in Ops Manager, or
 
 The following properties can be obtained either from Pivotal Application Service or from New Relic Insights:
 
-   * User Name: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> identity`
-   * Password: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> password`
-   * UAA URL: `https://uaa.YOUR-PCF-DOMAIN`  --  `cf curl /v2/info`
-   * Traffic Controller URL: `wss://doppler.PCF-DOMAIN:SSL-PORT`  --  `cf curl /v2/info`
    * Firehose Subscription ID: A unique ID (i.e. `newrelic.firehose`)
    * Skip SSL: If SSL is disabled, this value should be set to `true`.
    * Selected Events: A comma-separated list of any of the following Firehose event types:
@@ -70,8 +60,12 @@ The following properties can be obtained either from Pivotal Application Service
    * Insights Base URL: `https://insights-collector.newrelic.com/API-VERSION` (API version is currently v1)
    * Insights RPM ID: The first number that you find in your RPM Url (i.e. `https://insights.newrelic.com/accounts/RPM-ID/...`)
    * Insights Insert Key: An insert key from `https://insights.newrelic.com/accounts/RPM-ID/manage/api_keys`.
-   * Admin User Name: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> identity`
-   * Admin Password: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> password`
+   * User Name: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> identity` </br>(Only for Application push)
+   * Password: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> password` </br>(Only for Application push)
+   * UAA URL: `https://uaa.YOUR-PCF-DOMAIN`  --  `cf curl /v2/info` </br>(Only for Application push)
+   * Traffic Controller URL: `wss://doppler.PCF-DOMAIN:SSL-PORT`  --  `cf curl /v2/info` </br>(Only for Application push)
+   * Admin User Name: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> identity` </br>(Only for Application push)
+   * Admin Password: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> password` </br>(Only for Application push)
 
 1. As an admin user in the New Relic UI, you can go to **New Relic Insights > Manage Data > API Keys** to obtain an insert key. If you have an existing key, you can use it. If you do not already have one, you can create a fresh insert key specifically for this purpose.
 
@@ -91,6 +85,10 @@ When pushing New Relic Nozzle for PCF as an application, you need to have a mani
       instances: 3
       health-check-type: none
       host: cf-firehose-nozzle-${random-word}
+      buildpacks:
+      - binary_buildpack
+      path: ./dist
+      command: ./nr-nozzle
       env:
         NOZZLE_USERNAME: NOZZLE-USER
         NOZZLE_PASSWORD: NOZZLE-PASSWORD
@@ -126,14 +124,14 @@ When pushing New Relic Nozzle for PCF as an application, you need to have a mani
 
 <p class="note"><strong>Note:</strong> In order to automate the <code>cf push</code> deployment process as much as possible, create an application <code>manifest.yml</code> file. Update the manifest as required for your environment. Make sure to assign proper values to all required environment variables. Any property values within angle brackets must be changed to the correct values for your environment.</p>
 
-<p class="note"><strong>Note:</strong> When you are pushing the nozzle as an app, the <strong>product</strong> and <strong>release</strong> folders are not required. Make sure to remove these folders from the directory where you run <strong>cf push</strong> to reduce the size of the upload, or use <strong>.cfignore</strong> file.</p>
+<p class="note"><strong>Note:</strong> Maske sure to build the nozzle binary in <strong>"dist"</strong> subdirectory (using the build command below), so that when you push the app, the source and rest of the unnecessary files/folders do not get pushed into the container.</p>
 
 ### <a id='app-build'></a> Application Build and Deploy
 
 The application is already built and ready to run on PCF. If you make any changes to the code, or would like to run on other operating systems, you can rebuild the binary.
 
 <pre>
-$ env GOOS=&lt;OS-name&gt; GOARCH=amd64 go build -o nr-nozzle
+$ env GOOS=&lt;OS-name&gt; GOARCH=amd64 go build -o dist/nr-nozzle
 $ cf push
 </pre>
 
