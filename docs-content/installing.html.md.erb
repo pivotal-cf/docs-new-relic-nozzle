@@ -23,7 +23,7 @@ You can either install the New Relic Nozzle for PCF as a tile in Ops Manager, or
     - Select your desired networks.
     - Click **Save**.
   * Under **New Relic Firehose Nozzle > Settings > New Relic Firehose Nozzle**, set the following fields:
-    - New Relic Insights Base URL: `https://insights-collector.newrelic.com/v1`
+    - New Relic Insights Base URL: `US: https://insights-collector.newrelic.com/v1` or `EU: https://insights-collector.eu01.nr-data.net/v1`
     - New Relic RPM Account ID: `YOUR-NEW-RELIC-RPM-ACCOUNT`
     - New Relic Insights Insert Key: `YOUR-NEW-RELIC-INSIGHTS-INSERT-KEY`
     - New Relic Insights Maximum Number of Events: A value between 50 and 950 (Default is 500)
@@ -57,7 +57,7 @@ The following properties can be obtained either from Pivotal Application Service
     - ContainerMetric
     - HttpStartStop
     - LogMessage
-   * Insights Base URL: `https://insights-collector.newrelic.com/API-VERSION` (API version is currently v1)
+   * Insights Base URL: `US: https://insights-collector.newrelic.com/API-VERSION` or `EU: https://insights-collector.eu01.nr-data.net/API-VERSION` (API version is currently v1)
    * Insights RPM ID: The first number that you find in your RPM Url (i.e. `https://insights.newrelic.com/accounts/RPM-ID/...`)
    * Insights Insert Key: An insert key from `https://insights.newrelic.com/accounts/RPM-ID/manage/api_keys`.
    * User Name: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> identity` </br>(Only for Application push)
@@ -101,7 +101,7 @@ When pushing New Relic Nozzle for PCF as an application, you need to have a mani
         NOZZLE_ADMIN_USER: ADMIN-USER with admin privileges to obtain all application details in all orgs/spaces
         NOZZLE_ADMIN_PASSWORD: ADMIN-PASSWORD password for the user with admin privileges
         NOZZLE_APP_DETAIL_INTERVAL: interval for querying application details (defaults to 1 minute)
-        NEWRELIC_INSIGHTS_BASE_URL: https://insights-collector.newrelic.com/v1
+        NEWRELIC_INSIGHTS_BASE_URL: US: "https://insights-collector.newrelic.com/v1" or EU: "https://insights-collector.eu01.nr-data.net/v1"
         NEWRELIC_INSIGHTS_RPM_ID: NEW-RELIC-RPM-ACCOUNT-ID
         NEWRELIC_INSIGHTS_INSERT_KEY: INSIGHTS-INSERT-KEY
         NEWRELIC_NOZZLE_VERSION: 1.1.15    # current version
