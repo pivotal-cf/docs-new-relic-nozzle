@@ -1,22 +1,22 @@
 ---
-title: Installing and Configuring New Relic Nozzle for PCF
+title: Installing and Configuring New Relic Nozzle for Pivotal Platform
 owner: Partners
 ---
 
-This topic describes how to install and configure New Relic Nozzle for Pivotal Cloud Foundry (PCF).
+This topic describes how to install and configure New Relic Nozzle for Pivotal Platform.
 
-You can either install the New Relic Nozzle for PCF as a tile in Ops Manager, or push it as a regular application.
+You can either install the New Relic Nozzle for Pivotal Platform as a tile in Ops Manager, or push it as a regular application.
 
 
-## <a id='install-opsmgr'></a> Install and Configure New Relic Nozzle for PCF as a Tile in Ops Manager
+## <a id='install-opsmgr'></a> Install and Configure New Relic Nozzle for Pivotal Platform as a Tile in Ops Manager
 
 1. Download the product file from [Pivotal Network](https://network.pivotal.io/products/nr-firehose-nozzle/).
 
 1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file. 
 
-1. Under the **Import a Product** button, click the **+** sign next to the version number of New Relic Nozzle for PCF. This adds the tile to your staging area.
+1. Under the **Import a Product** button, click the **+** sign next to the version number of New Relic Nozzle for Pivotal Platform. This adds the tile to your staging area.
 
-1. Click the newly added **New Relic Nozzle for PCF** tile.
+1. Click the newly added **New Relic Nozzle for Pivotal Platform** tile.
 
 1. Follow the steps below to configure the nozzle tile:
   * Under **New Relic Firehose Nozzle > Settings > Assign AZs and Networks:**
@@ -62,8 +62,8 @@ The following properties can be obtained either from Pivotal Application Service
    * Insights Insert Key: An insert key from `https://insights.newrelic.com/accounts/RPM-ID/manage/api_keys`.
    * User Name: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> identity` </br>(Only for Application push)
    * Password: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> password` </br>(Only for Application push)
-   * UAA URL: `https://uaa.YOUR-PCF-DOMAIN`  --  `cf curl /v2/info` </br>(Only for Application push)
-   * Traffic Controller URL: `wss://doppler.PCF-DOMAIN:SSL-PORT`  --  `cf curl /v2/info` </br>(Only for Application push)
+   * UAA URL: `https://uaa.YOUR-Pivotal Platform-DOMAIN`  --  `cf curl /v2/info` </br>(Only for Application push)
+   * Traffic Controller URL: `wss://doppler.Pivotal Platform-DOMAIN:SSL-PORT`  --  `cf curl /v2/info` </br>(Only for Application push)
    * Admin User Name: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> identity` </br>(Only for Application push)
    * Admin Password: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> password` </br>(Only for Application push)
 
@@ -74,9 +74,9 @@ The following properties can be obtained either from Pivotal Application Service
 1. Return to the Ops Manager Installation Dashboard and click **Apply Changes**.
 
 
-## <a id='install-app'></a> Install and Configure New Relic Nozzle for PCF as an Application
+## <a id='install-app'></a> Install and Configure New Relic Nozzle for Pivotal Platform as an Application
 
-When pushing New Relic Nozzle for PCF as an application, you need to have a manifest with the following properties:
+When pushing New Relic Nozzle for Pivotal Platform as an application, you need to have a manifest with the following properties:
 
 ```
 	applications:
@@ -92,9 +92,9 @@ When pushing New Relic Nozzle for PCF as an application, you need to have a mani
       env:
         NOZZLE_USERNAME: NOZZLE-USER
         NOZZLE_PASSWORD: NOZZLE-PASSWORD
-        NOZZLE_API_URL: https://api.YOUR-PCF-DOMAIN
-        NOZZLE_UAA_URL: https://uaa.YOUR-PCF-DOMAIN
-        NOZZLE_TRAFFIC_CONTROLLER_URL: wss://doppler.YOUR-PCF-DOMAIN:SSL-PORT
+        NOZZLE_API_URL: https://api.YOUR-Pivotal Platform-DOMAIN
+        NOZZLE_UAA_URL: https://uaa.YOUR-Pivotal Platform-DOMAIN
+        NOZZLE_TRAFFIC_CONTROLLER_URL: wss://doppler.YOUR-Pivotal Platform-DOMAIN:SSL-PORT
         NOZZLE_FIREHOSE_SUBSCRIPTION_ID: newrelic.firehose
         NOZZLE_SKIP_SSL: true/false
         NOZZLE_SELECTED_EVENTS: Comma-separated list of event types
@@ -128,7 +128,7 @@ When pushing New Relic Nozzle for PCF as an application, you need to have a mani
 
 ### <a id='app-build'></a> Application Build and Deploy
 
-The application is already built and ready to run on PCF. If you make any changes to the code, or would like to run on other operating systems, you can rebuild the binary.
+The application is already built and ready to run on Pivotal Platform. If you make any changes to the code, or would like to run on other operating systems, you can rebuild the binary.
 
 <pre>
 $ env GOOS=&lt;OS-name&gt; GOARCH=amd64 go build -o dist/nr-nozzle
@@ -153,4 +153,4 @@ You can specify the values for these properties during the setup of the tile in 
    
 * These environment variables must be in lower case.
 * You must set `http_proxy` to your proxy server address and port (i.e. `http://my_proxyserver:my_proxy_port`).
-* You must set `no_proxy` to any address that you need to bypass. In order for the nozzle to work properly with proxies, you must bypass the `doppler` server (`doppler.YOUR-PCF-DOMAIN.com`). Make sure you do not include the protocol and the port for `no_proxy`. Just add the server name.
+* You must set `no_proxy` to any address that you need to bypass. In order for the nozzle to work properly with proxies, you must bypass the `doppler` server (`doppler.YOUR-Pivotal Platform-DOMAIN.com`). Make sure you do not include the protocol and the port for `no_proxy`. Just add the server name.
