@@ -28,7 +28,7 @@ You can either install the New Relic Nozzle for Pivotal Platform as a tile in Op
       - New Relic RPM Account ID: `YOUR-NEW-RELIC-RPM-ACCOUNT`
       - New Relic Insights Insert Key: `YOUR-NEW-RELIC-INSIGHTS-INSERT-KEY`
       - New Relic Insights Maximum Number of Events: A value between 50 and 950 (Default is 500)
-      - Nozzle instance: defaults to 3. Specify between 1 to 20 instance(s) depending on the load of Firehose events.
+      - Nozzle instances: defaults to 3. Specify between 1 to 30 instance(s) depending on the load of Firehose events.
       - Skip SSL Verification (True/false): Whether to verify SSL connection
       - Firehose Subscription ID: Unique Subscription Identifier (i.e. `newrelic.firehose`)
       - Selected Events: Comma-separated list of event types
@@ -68,7 +68,7 @@ The following properties can be obtained either from Pivotal Application Service
      * Traffic Controller URL: `wss://doppler.Pivotal Platform-DOMAIN:SSL-PORT`  --  `cf curl /v2/info` </br>(Only for Application push)
      * Admin User Name: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> identity` </br>(Only for Application push)
      * Admin Password: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> password` </br>(Only for Application push)
-     * Redis database information: If enabling Redis for app data caching, you need your redis service name (i.e. "p.redis") and service plan (i.e. "cache-small"). Check in the Redis tile to obtain this information
+     * Redis database information: If enabling Redis for app data caching, you need your redis service name (i.e. "p.redis") and service plan (i.e. "cache-small"). Check in the Redis tile or run **"cf marketplace"** to obtain this information
 
 1. As an admin user in the New Relic UI, you can go to **New Relic Insights > Manage Data > API Keys** to obtain an insert key. If you have an existing key, you can use it. If you do not already have one, you can create a fresh insert key specifically for this purpose.
 
