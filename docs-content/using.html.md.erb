@@ -13,25 +13,44 @@ Metrics and events the Pivotal Platform Loggregator Firehose collects are visual
 For example, in the **Container Metrics** dashboard, you can filter the data by **CF Origins**, **Jobs**, and **IP address**. Then you can select an application ID to narrow down to the data coming only from one application. Furthermore, if you would like to see the performance of one application container, you can select one of the containers by clicking on the container index, filtering the data in the dashboard, and drilling down to the data for only one application container.
 
 
-## <a id='insights-queries'></a> Sample Insights Queries
+## <a id='insights-queries'></a> Sample Queries
 
-The **Insights Event type** used to store Firehose events is called **PcfFirehoseEvent**. The following are some NRQL strings that can be used to extract events and metrics:
+**Multiple Event types** are now used to store Firehose events, including **PCFCapacity, PCFContainerMetric, PCFCounterEvent, PCFHttpStartStop, PCFLogMessage, and PCFValueMetric**. The following are some NRQL strings that can be used to extract events and metrics:
 
 ```
+v1.x:
 select count(*) from PcfFirehoseEvent since 1 day ago facet FirehoseEventType
+v2.x+:
+select count(*) from PCFContainerMetric since 1 day ago
+select count(*) from PCFLogMessage since 1 day ago
 
+v1.x:
 select count(*) from PcfFirehoseEvent since 1 day ago facet job timeseries
+v2.x+:
+SELECT count(*) from PCFContainerMetric since 1 day ago facet pcf.job timeseries
 
+v1.x:
 select count(*) from PcfFirehoseEvent where job = 'diego_cell' since 1 day ago facet origin  timeseries
+v2.x+:
+SELECT count(*) from PCFValueMetric where pcf.job = 'diego_cell' facet pcf.origin since 1 day ago timeseries
 
+v1.x:
 select average(containerMetricCpuPercentage) from PcfFirehoseEvent facet containerMetricApplicationId timeseries
+v2.x+:
+select average(metric.sum/metric.samples.count) from PCFContainerMetric where metric.name = 'app.cpu' facet app.id timeseries
 
-select count(*) from  PcfFirehoseEvent where FirehoseEventType = 'HttpStartStop' facet httpStatusCode
+v1.x:
+select count(*) from PcfFirehoseEvent where FirehoseEventType = 'HttpStartStop' facet httpStatusCode
+v2.x+:
+select count(*) from PCFHttpStartStop facet http.status
 ```
 
-Events from all Pivotal Platform deployments end up in **PcfFirehoseEvent**. If you collect events from multiple Pivotal Platform environments, you can use **pcfDomain** and **pcfInstanceIp** metrics to distunguish between events from different Pivotal Platform deploments (either in a **WHERE** clause or by **FACET**ing the events by **pcfDomain**).
+Events from all PCF deployments end up in **PCFCapacity, PCFContainerMetric, PCFCounterEvent, PCFHttpStartStop, PCFLogMessage, and PCFValueMetric**. If you collect events from multiple PCF environments, you can use **pcf.domain** and **pcf.IP** metrics to distunguish between events from different PCF deploments (either in a **WHERE** clause or by **FACET**ing the events by **pcf.domain**).
 
 
-## <a id='insights-dashboards'></a> Obtaining Insights Pre-Built Dashboards
+## <a id='alerts'></a> New Relic Alerts
+[NRQL alert conditions](https://docs.newrelic.com/docs/alerts/new-relic-alerts/defining-conditions/create-alert-conditions-nrql-queries) can be configured to alert on data from the New Relic Nozzle.
+
+## <a id='insights-dashboards'></a> Obtaining Pre-Built Dashboards
 
 Contact your New Relic representative to import pre-built nozzle dashboards to your New Relic account.
