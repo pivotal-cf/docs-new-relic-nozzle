@@ -5,6 +5,25 @@ owner: Partners
 
 These are release notes for New Relic Nozzle for Pivotal Platform.
 
+## <a id="ver-2.5.0"></a> v2.5.0
+
+**General Availability Release Date:** Jan 27, 2020
+
+Features included in this release:
+
+* Nozzle now communicates with Loggregator using the Reverse Log Proxy (RLP) Gateway and V2 envelope format. This ensures support with PCF 2.9+.
+* Events are now routed to multiple event types (PCFContainerMetric, PCFLogMessage, etc.) instead of all events using PcfFirehoseEvent. **This will require alert and dashboard adjustments.**
+* Event attribute names have changed from camel case to using . to separate multiple words.  For example, app.name, metric.max, etc. **This will require alert and dashboard adjustments.**
+* Metric based events (PCFContainerMetric, PCFCounterEvent, and PCFValueMetric) are now aggregated. This reduces the number of Insights events produced by the nozzle.  Added attributes include metric.min, metric.max, metric.sample.last.value, metric.samples.count, and metric.sum.
+* Added PCFCapacity event type.
+* Added caching and rate limiting for PCF API calls.
+* Some configuration variables have changed names. **May require tile configuration updates.**
+* Added LogMessage include/exclude filters.
+* Application related events (PCFContainerMetric and PCFLogMessage) can now be routed to a different New Relic account if a New Relic RPM Account ID and Insights Insert Key are defined in New Relic Service Broker plan configuration.
+* Metric related filters have been removed due to the event reduction benefits of aggregation.
+* Added graceful shutdown in response to cf restart, stop, or scale down scenarios
+
+Additional details for these changes [are available](https://github.com/newrelic/newrelic-pcf-nozzle-tile/blob/master/V2.md)
 
 ## <a id="ver-1.1.26"></a> v1.1.26
 
