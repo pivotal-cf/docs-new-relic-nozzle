@@ -160,15 +160,7 @@ uaac client add firehose-to-newrelic \
 
 ### <a id='app-build'></a> Application Build and Deploy
 
-The application is already built and ready to run on Pivotal Platform. If you make any changes to the code, or would like to run on other operating systems, you can rebuild the binary.
-
-1. Edit the `GOOS` AND `GOARCH` variables in `release.sh`.
-1. Execute `release.sh`
-1. Retrieve the updated binary from the dist directory.
-
-You can obtain a complete list of valid `GOOS` and `GOARCH` types from [Go Lang docs](https://golang.org/doc/install/source).
-
-Once you build the binary and update the `manifest.yml` file with proper values, you can `cf push` the tile as an application.
+If you make any changes to the code, or would like to run on other operating systems, you can clone the code from [github](https://github.com/newrelic/newrelic-pcf-nozzle-tile/) and follow the building and deploy steps from the [readme](https://github.com/newrelic/newrelic-pcf-nozzle-tile/README.md).
 
 
 ## <a id='using-proxy'></a> Using Proxy Servers
