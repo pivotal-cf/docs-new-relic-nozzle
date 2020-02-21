@@ -5,48 +5,60 @@ owner: Partners
 
 This topic describes how to use New Relic Nozzle for Pivotal Platform.
 
-
 ## <a id='using'></a> Using New Relic Nozzle for Pivotal Platform
 
-Metrics and events the Pivotal Platform Loggregator Firehose collects are visualized in dashboards in New Relic Insights. These dashboards allow you to filter the data by various metrics.
+Metrics and events collected by the Pivotal Platform Loggregator Firehose are visualized in dashboards in New Relic Insights and New Relic One. These dashboards allow you to filter the data by various metrics.
 
-For example, in the **Container Metrics** dashboard, you can filter the data by **CF Origins**, **Jobs**, and **IP address**. Then you can select an application ID to narrow down to the data coming only from one application. Furthermore, if you would like to see the performance of one application container, you can select one of the containers by clicking on the container index, filtering the data in the dashboard, and drilling down to the data for only one application container.
+For example, in the **Container Metrics** dashboard, you can filter the data by **CF Origins**, **Jobs**, and **IP address**. You can then select an application ID to narrow down to the data coming only from one application. 
 
+Furthermore, if you would like to see the performance of one application container, you can select one of the containers by clicking on the container index, filtering the data in the dashboard, and drill down to only one application container.
 
 ## <a id='insights-queries'></a> Sample Queries
 
-**Multiple Event types** are now used to store Firehose events, including **PCFCapacity, PCFContainerMetric, PCFCounterEvent, PCFHttpStartStop, PCFLogMessage, and PCFValueMetric**. The following are some NRQL strings that can be used to extract events and metrics:
+**Multiple Event types** are now used to store Firehose events, including `PCFCapacity`, `PCFContainerMetric`, `PCFCounterEvent`, `PCFHttpStartStop`, `PCFLogMessage`, and `PCFValueMetric`. 
 
+The following are some NRQL strings that can be used to extract events and metrics:
+
+#### v1.x:
 ```
-v1.x:
-select count(*) from PcfFirehoseEvent since 1 day ago facet FirehoseEventType
-v2.x+:
-select count(*) from PCFContainerMetric since 1 day ago
-select count(*) from PCFLogMessage since 1 day ago
-
-v1.x:
-select count(*) from PcfFirehoseEvent since 1 day ago facet job timeseries
-v2.x+:
-SELECT count(*) from PCFContainerMetric since 1 day ago facet pcf.job timeseries
-
-v1.x:
-select count(*) from PcfFirehoseEvent where job = 'diego_cell' since 1 day ago facet origin  timeseries
-v2.x+:
-SELECT count(*) from PCFValueMetric where pcf.job = 'diego_cell' facet pcf.origin since 1 day ago timeseries
-
-v1.x:
-select average(containerMetricCpuPercentage) from PcfFirehoseEvent facet containerMetricApplicationId timeseries
-v2.x+:
-select average(metric.sum/metric.samples.count) from PCFContainerMetric where metric.name = 'app.cpu' facet app.id timeseries
-
-v1.x:
-select count(*) from PcfFirehoseEvent where FirehoseEventType = 'HttpStartStop' facet httpStatusCode
-v2.x+:
-select count(*) from PCFHttpStartStop facet http.status
+SELECT count(*) FROM PcfFirehoseEvent SINCE 1 day ago FACET FirehoseEventType
+```
+```
+SELECT count(*) FROM PcfFirehoseEvent SINCE 1 day ago FACET job TIMESERIES
+```
+```
+SELECT count(*) FROM PcfFirehoseEvent WHERE job = 'diego_cell' SINCE 1 day ago FACET origin TIMESERIES
+```
+```
+SELECT average(containerMetricCpuPercentage) FROM PcfFirehoseEvent FACET containerMetricApplicationId TIMESERIES
+```
+```
+SELECT count(*) FROM PcfFirehoseEvent WHERE FirehoseEventType = 'HttpStartStop' FACET httpStatusCode
 ```
 
-Events from all PCF deployments end up in **PCFCapacity, PCFContainerMetric, PCFCounterEvent, PCFHttpStartStop, PCFLogMessage, and PCFValueMetric**. If you collect events from multiple PCF environments, you can use **pcf.domain** and **pcf.IP** metrics to distunguish between events from different PCF deploments (either in a **WHERE** clause or by **FACET**ing the events by **pcf.domain**).
+#### v2.x+:
+```
+SELECT count(*) FROM PCFContainerMetric SINCE 1 day ago
+```
+```
+SELECT count(*) FROM PCFLogMessage SINCE 1 day ago
+```
+```
+SELECT count(*) FROM PCFContainerMetric SINCE 1 day ago FACET pcf.job TIMESERIES
+```
+```
+SELECT count(*) FROM PCFValueMetric WHERE pcf.job = 'diego_cell' FACET pcf.origin SINCE 1 day ago TIMESERIES
+```
+```
+SELECT average(metric.sum/metric.samples.count) FROM PCFContainerMetric WHERE metric.name = 'app.cpu' FACET app.id TIMESERIES
+```
+```
+SELECT count(*) FROM PCFHttpStartStop FACET http.status
+```
 
+Events from all PCF deployments end up in `PCFCapacity`, `PCFContainerMetric`, `PCFCounterEvent`, `PCFHttpStartStop`, `PCFLogMessage`, and `PCFValueMetric`. 
+
+If you collect events from multiple PCF environments, use `pcf.domain` and `pcf.IP** metrics` to distunguish between events from different PCF deploments (either in a `WHERE` clause or by `FACET`ing the events by `pcf.domain`).
 
 ## <a id='alerts'></a> New Relic Alerts
 [NRQL alert conditions](https://docs.newrelic.com/docs/alerts/new-relic-alerts/defining-conditions/create-alert-conditions-nrql-queries) can be configured to alert on data from the New Relic Nozzle.
