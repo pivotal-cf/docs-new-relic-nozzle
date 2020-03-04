@@ -1,22 +1,22 @@
 ---
-title: Installing and Configuring New Relic Nozzle for Pivotal Platform
+title: Installing and Configuring New Relic Nozzle for VMware Tanzu
 owner: Partners
 ---
 
-This topic describes how to install and configure New Relic Nozzle for Pivotal Platform.
+This topic describes how to install and configure New Relic Nozzle for VMware Tanzu.
 
-You can either install the New Relic Nozzle for Pivotal Platform as a tile in Ops Manager, or push it as a regular application.
+You can either install the New Relic Nozzle for VMware Tanzu as a tile in Ops Manager, or push it as a regular application.
 
 
-## <a id='install-opsmgr'></a> Install and Configure New Relic Nozzle for Pivotal Platform as a Tile in Ops Manager
+## <a id='install-opsmgr'></a> Install and Configure New Relic Nozzle for VMware Tanzu as a Tile in Ops Manager
 
 1. Download the product file from [Pivotal Network](https://network.pivotal.io/products/nr-firehose-nozzle/).
 
 1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file. 
 
-1. Under the **Import a Product** button, click the **+** sign next to the version number of New Relic Nozzle for Pivotal Platform. This adds the tile to your staging area.
+1. Under the **Import a Product** button, click the **+** sign next to the version number of New Relic Nozzle for VMware Tanzu. This adds the tile to your staging area.
 
-1. Click the newly added **New Relic Nozzle for Pivotal Platform** tile.
+1. Click the newly added **New Relic Nozzle for VMware Tanzu** tile.
 
 1. Follow the steps below to configure the nozzle tile:
 
@@ -51,7 +51,7 @@ You can either install the New Relic Nozzle for Pivotal Platform as a tile in Op
 
 ### <a id='obtain-config-values'></a> Where to Obtain Configuration Values
 
-The following properties can be obtained either from Pivotal Application Service or from New Relic Insights:
+The following properties can be obtained either from VMware Tanzu Application Service for VMs or from New Relic Insights:
 
      * Firehose Subscription ID: A unique ID (i.e. `newrelic.firehose`)
      * Skip SSL: If SSL is disabled, this value should be set to `true`.
@@ -63,12 +63,12 @@ The following properties can be obtained either from Pivotal Application Service
       - LogMessage
      * New Relic RPM Account ID: The first number that you find in your RPM Url (i.e. `https://insights.newrelic.com/accounts/RPM-ID/...`)
      * New Relic Insights Insert Key: An insert key from `https://insights.newrelic.com/accounts/RPM-ID/manage/api_keys`.
-     * Client Id: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> identity` </br>(Only for Application push)
-     * Client Secret: `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> password` </br>(Only for Application push)
+     * Client Id: `Ops Manager -> VMware Tanzu Application Service for VMs -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> identity` </br>(Only for Application push)
+     * Client Secret: `Ops Manager -> VMware Tanzu Application Service for VMs -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> password` </br>(Only for Application push)
      * API URL: `https://api.YOUR-PCF-DOMAIN`  --  `cf curl /v2/info` </br>(Only for Application push)
      * UAA URL: `https://uaa.YOUR-PCF-DOMAIN`  --  `cf curl /v2/info` </br>(Only for Application push)
-     * API User Name: If using admin account - `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> identity` </br>(Only for Application push)
-     * API Password: If using admin account - `Ops Manager -> Pivotal Application Service -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> password` </br>(Only for Application push)
+     * API User Name: If using admin account - `Ops Manager -> VMware Tanzu Application Service for VMs -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> identity` </br>(Only for Application push)
+     * API Password: If using admin account - `Ops Manager -> VMware Tanzu Application Service for VMs -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> password` </br>(Only for Application push)
   
 1. As an admin user in the New Relic UI, you can go to **New Relic Insights > Manage Data > API Keys** to obtain an insert key. If you have an existing key, you can use it. If you do not already have one, you can create a fresh insert key specifically for this purpose.
 
@@ -77,9 +77,9 @@ The following properties can be obtained either from Pivotal Application Service
 1. Return to the Ops Manager Installation Dashboard and click **Apply Changes**.
 
 
-## <a id='install-app'></a> Install and Configure New Relic Nozzle for Pivotal Platform as an Application
+## <a id='install-app'></a> Install and Configure New Relic Nozzle for VMware Tanzu as an Application
 
-When pushing New Relic Nozzle for Pivotal Platform as an application, you need to have a manifest with the following properties:
+When pushing New Relic Nozzle for VMware Tanzu as an application, you need to have a manifest with the following properties:
 
 ```
 applications:
@@ -104,7 +104,7 @@ applications:
       NRF_ENABLED_ENVELOPE_TYPES: ValueMetric,CounterEvent,LogMessage,ContainerMetric,HttpStartStop
 
       NRF_CF_API_USERNAME: "Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> identity"
-      NRF_CF_API_PASSWORD: "Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> password"
+      NRF_CF_API_TAS for VMsSWORD: "Ops Mgr -> Elastic Runtime -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> password"
       NRF_NEWRELIC_ACCOUNT_ID: New Relic Account ID
       NRF_NEWRELIC_INSERT_KEY: New Relic Insights Insert Key
       
@@ -160,7 +160,7 @@ uaac client add firehose-to-newrelic \
 
 ### <a id='app-build'></a> Application Build and Deploy
 
-The application is already built and ready to run on Pivotal Platform. If you make any changes to the code, or would like to run on other operating systems, you can rebuild the binary.
+The application is already built and ready to run on VMware Tanzu. If you make any changes to the code, or would like to run on other operating systems, you can rebuild the binary.
 
 1. Edit the `GOOS` AND `GOARCH` variables in `release.sh`.
 1. Execute `release.sh`
@@ -184,4 +184,4 @@ You can specify the values for these properties during the setup of the tile in 
    
 * These environment variables must be in lower case.
 * You must set `http_proxy` to your proxy server address and port (i.e. `http://my_proxyserver:my_proxy_port`).
-* You must set `no_proxy` to any address that you need to bypass. In order for the nozzle to work properly with proxies, you must bypass the `doppler` server (`doppler.YOUR-Pivotal Platform-DOMAIN.com`). Make sure you do not include the protocol and the port for `no_proxy`. Just add the server name.
+* You must set `no_proxy` to any address that you need to bypass. In order for the nozzle to work properly with proxies, you must bypass the `doppler` server (`doppler.YOUR-VMware Tanzu-DOMAIN.com`). Make sure you do not include the protocol and the port for `no_proxy`. Just add the server name.
