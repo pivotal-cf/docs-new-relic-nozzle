@@ -5,13 +5,21 @@ owner: Partners
 
 These are release notes for New Relic Nozzle for VMware Tanzu.
 
+## <a id="ver-2.5.3"></a> v2.5.3
+
+**General Availability Release Date:** Mar 5, 2020
+
+Features included in this release:
+
+* Fixed race condition when multiple metrics were created at the same time.
+
 ## <a id="ver-2.5.2"></a> v2.5.2
 
 **General Availability Release Date:** Jan 31, 2020
 
 Features included in this release:
 
-* Bug fix - PCFCapacity events will no longer continue to report data for Diego cells that no longer exist.
+* PCFCapacity events will no longer continue to report data for Diego cells that no longer exist.
 
 ## <a id="ver-2.5.0"></a> v2.5.0
 
@@ -19,19 +27,19 @@ Features included in this release:
 
 Features included in this release:
 
-* Nozzle now communicates with Loggregator using the Reverse Log Proxy (RLP) Gateway and V2 envelope format. This ensures support with PCF 2.9+.
-* Events are now routed to multiple event types (PCFContainerMetric, PCFLogMessage, etc.) instead of all events using PcfFirehoseEvent. **This will require alert and dashboard adjustments.**
-* Event attribute names have changed from camel case to using . to separate multiple words.  For example, app.name, metric.max, etc. **This will require alert and dashboard adjustments.**
-* Metric based events (PCFContainerMetric, PCFCounterEvent, and PCFValueMetric) are now aggregated. This reduces the number of Insights events produced by the nozzle.  Added attributes include metric.min, metric.max, metric.sample.last.value, metric.samples.count, and metric.sum.
-* Added PCFCapacity event type.
+* Nozzle now communicates with Loggregator using the Reverse Log Proxy (RLP) Gateway and V2 envelope format. This ensures support with PCF 2.9.
+* Events are now routed to multiple event types (`PCFContainerMetric`, `PCFLogMessage`, etc.) instead of all events using `PcfFirehoseEvent`. **This requires alert and dashboard adjustments.**
+* Event attribute names have changed from camel case to using `.` to separate multiple words.  For example, `app.name`, `metric.max`, etc. **This requires alert and dashboard adjustments.**
+* Metric based events (`PCFContainerMetric`, `PCFCounterEvent`, and `PCFValueMetric`) are now aggregated. This reduces the number of events produced by the nozzle.  Added attributes include `metric.min`, `metric.max`, `metric.sample`.`last.value`, `metric.samples.count`, and `metric.sum`.
+* Added `PCFCapacity` event type.
 * Added caching and rate limiting for PCF API calls.
 * Some configuration variables have changed names. **May require tile configuration updates.**
 * Added LogMessage include/exclude filters.
-* Application related events (PCFContainerMetric and PCFLogMessage) can now be routed to a different New Relic account if a New Relic RPM Account ID and Insights Insert Key are defined in New Relic Service Broker plan configuration.
+* Application related events (`PCFContainerMetric` and `PCFLogMessage`) can now be routed to a different New Relic account if a New Relic RPM Account ID and Insights Insert Key are defined in New Relic Service Broker plan configuration.
 * Metric related filters have been removed due to the event reduction benefits of aggregation.
-* Added graceful shutdown in response to cf restart, stop, or scale down scenarios
+* Added graceful shutdown in response to cf restart, stop, or scale down scenarios.
 
-Additional details for these changes [are available](https://github.com/newrelic/newrelic-pcf-nozzle-tile/blob/master/V2.md)
+Additional details for these changes [are available](https://github.com/newrelic/newrelic-pcf-nozzle-tile/blob/master/V2.md).
 
 ## <a id="ver-1.1.26"></a> v1.1.26
 
@@ -39,9 +47,9 @@ Additional details for these changes [are available](https://github.com/newrelic
 
 Features included in this release:
 
-* Increased range of allowed nozzle instance from 20 to 30
-* Fixed recursive logging issue
-* Tested on VMware Tanzu up to and including v2.7
+* Increased range of allowed nozzle instance from 20 to 30.
+* Fixed recursive logging issue.
+* Tested on VMware Tanzu up to and including v2.7.
 
 
 ## <a id="ver-1.1.22"></a> v1.1.22
@@ -50,8 +58,8 @@ Features included in this release:
 
 Features included in this release:
 
-* Added Redis database to cache application metadata among nozzle instances. Only the first nozzle instance connects to CC DB and shares the data with other instances
-* Tested on VMware Tanzu up to and including v2.7
+* Added Redis database to cache application metadata among nozzle instances. Only the first nozzle instance connects to CC DB and shares the data with other instances.
+* Tested on VMware Tanzu up to and including v2.7.
 
 
 ## <a id="ver-1.1.21"></a> v1.1.21
@@ -60,8 +68,8 @@ Features included in this release:
 
 Features included in this release:
 
-* Fixed problem with printing error logs
-* Tested on VMware Tanzu up to and including v2.6
+* Fixed problem with printing error logs.
+* Tested on VMware Tanzu up to and including v2.6.
 
 
 ## <a id="ver-1.1.20"></a> v1.1.20
@@ -80,10 +88,10 @@ Features included in this release:
 
 Features included in this release:
 
-* Added New Relic Insights GO library for improved connection to New Relic Insights
-* Improved error handling and error messages
-* Added accessors to obtain system information during the tile configuration
-* Tested on VMware Tanzu up to and including v2.6
+* Added New Relic Insights Go library for improved connection to New Relic Insights.
+* Improved error handling and error messages.
+* Added accessors to obtain system information during the tile configuration.
+* Tested on VMware Tanzu up to and including v2.6.
 
 
 ## <a id="ver-1.1.17"></a> v1.1.17
@@ -102,9 +110,9 @@ Features included in this release:
 
 Features included in this release:
 
-* Added HTTP healthcheck
-* Improved error handling when connecting to other systems
-* Tested on VMware Tanzu v2.3 and v2.4
+* Added HTTP health check.
+* Improved error handling when connecting to other systems.
+* Tested on VMware Tanzu v2.3 and v2.4.
 
 
 ## <a id="ver-1.1.14"></a> v1.1.14
@@ -113,9 +121,9 @@ Features included in this release:
 
 Features included in this release:
 
-* Added new origins to the nozzle filters in tile configuration
-* Added error handling for Cloud Controller database connection
-* Improved logging
+* Added new origins to the nozzle filters in tile configuration.
+* Added error handling for Cloud Controller database connection.
+* Improved logging.
 
 
 ## <a id="ver-1.1.13"></a> v1.1.13
@@ -124,12 +132,12 @@ Features included in this release:
 
 Features included in this release:
 
-* Added maximum number of events to upload to New Relic in every packet
-* Tested and verified on VMware Tanzu v2.2.x and v2.3.x
+* Added maximum number of events to upload to New Relic in every packet.
+* Tested and verified on VMware Tanzu v2.2.x and v2.3.x.
 
 Bug Fixes:
 
-* Fixed the crash issue when HTTP connection timed out
+* Fixed the crash issue when HTTP connection timed out.
 
 
 ## <a id="ver-1.1.0"></a> v1.1.0
@@ -138,8 +146,8 @@ Bug Fixes:
 
 Features included in this release:
 
-* Extends filtering capabilities of the nozzle to allow exclusion and inclusion of events with selected deployment, origin, and/or job names
-* Tested and verified on VMware Tanzu v2.2.x and VMware Tanzu v2.3.x
+* Extends filtering capabilities of the nozzle to allow exclusion and inclusion of events with selected deployment, origin, and/or job names.
+* Tested and verified on VMware Tanzu v2.2.x and VMware Tanzu v2.3.x.
 
 
 ## <a id="ver-1.0.4"></a> v1.0.4
@@ -149,9 +157,9 @@ Features included in this release:
 Features included in this release:
 
 * Allows VMware Tanzu admin to set number of nozzle instances in the tile
-* Collects more Application details (`org name`, `space name`, `application name`, stack guid, etc.) in ContainerMetric events
-* Allows filtering of unwanted Firehose events
-* Tested and verified on VMware Tanzu v2.0.x and v2.1.x
+* Collects more Application details (`org name`, `space name`, `application name`, stack guid, etc.) in `ContainerMetric` events.
+* Allows filtering of unwanted Firehose events.
+* Tested and verified on VMware Tanzu v2.0.x and v2.1.x.
 
 
 ## <a id="ver-0.8.0"></a> v0.8.0 
@@ -160,5 +168,5 @@ Features included in this release:
 
 Features included in this release:
 
-* Initial public beta release
-* Added proxy support
+* Initial public beta release.
+* Added proxy support.
