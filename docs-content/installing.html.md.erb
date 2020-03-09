@@ -3,83 +3,79 @@ title: Installing and Configuring New Relic Nozzle for VMware Tanzu
 owner: Partners
 ---
 
-This topic describes how to install and configure New Relic Nozzle for VMware Tanzu.
+You can install the [New Relic Nozzle for VMware Tanzu](https://network.pivotal.io/products/nr-firehose-nozzle/) as a tile in Ops Manager, or push it as a regular application.
 
-You can either install the New Relic Nozzle for VMware Tanzu as a tile in Ops Manager, or push it as a regular application.
+## <a id='install-opsmgr'></a> Install as a tile in Ops Manager
 
+1. Download New Relic Nozzle for VMware Tanzu from [Pivotal Network](https://network.pivotal.io/products/nr-firehose-nozzle/).
+2. Go to the **Ops Manager Installation Dashboard** and click **Import a Product**. 
+3. Under the **Import a Product** button, click the **+** sign next to the version number of New Relic Nozzle for VMware Tanzu. This adds the tile to your staging area.
+4. Click the newly added **New Relic Nozzle for VMware Tanzu** tile.
 
-## <a id='install-opsmgr'></a> Install and Configure New Relic Nozzle for VMware Tanzu as a Tile in Ops Manager
+### Configure the nozzle tile
 
-1. Download the product file from [Pivotal Network](https://network.pivotal.io/products/nr-firehose-nozzle/).
+Change the following settings to configure the nozzle tile:
 
-1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file. 
+* Under **New Relic Firehose Nozzle > Settings > Assign AZs and Networks**:
+  - Select your desired networks.
+  - Click **Save**.
+* Under **New Relic Firehose Nozzle > Settings > New Relic Firehose Nozzle**:
+  - New Relic RPM Account ID: `YOUR-NEW-RELIC-RPM-ACCOUNT`
+  - New Relic RPM Account Region: `US` or `EU`. Choose EU if your RPM URL contains .eu
+  - New Relic Insights Insert Key: `YOUR-NEW-RELIC-INSIGHTS-INSERT-KEY`
+  - Firehose Subscription ID: unique Subscription Identifier (i.e. `newrelic.firehose`)
+  - Nozzle instances: specify between 1 to 30 instance(s) depending on the load of Firehose events. Default is 2.
+* Under **New Relic Firehose Nozzle > Settings > Advanced Settings**:  
+  - Skip SSL Verification (True/False): whether to verify SSL connection
+  - Selected Events: comma-separated list of event types
+  - Drain Interval: how often aggregated metric events are sent (Default: 60s)
+  - Firehose -> Reverse Log Proxy Gateway Timeout (minutes): connection timeout to the RLP Gateway (Default: 16m)
+  - Firehose No Traffic Restart Threshold (seconds): the nozzle will automatically restart if no messages are received in this time period (Default: 15s)
+  - Firehose Queue Buffer Size (messages): number of messages the nozzle buffer can hold while processing. Also the number of messages that will be dropped if the buffer fills (Default: 8192)
+  - Log Level: INFO or DEBUG
+  - Tracer (True/False): activate trace level logging (**extremely** verbose)
+  * If your environment uses a proxy server, add the following environment variables:
+    - Proxy Server Address and Port: `proxy server address:port`
+    - Proxy Bypass: comma-separated list of servers to bypass proxy
+* Under **New Relic Firehose Nozzle tile > Settings > LogMessage Filters** tab:
+  - LogMessage Source Include Filter: comma or pipe-separated list of log sources to include (optional)
+  - LogMessage Source Exclude Filter: comma or pipe-separated list of log sources to exclude (optional)
+  - LogMessage Message Content Include Filter: comma or pipe-separated list of log message content to include (optional) (for example, Including Error,CRASHED would only send LogMessage events that contain Error or CRASHED)
+  - LogMessage Message Content Exclude Filter: comma or pipe-separated list of log message content to exclude (optional)<br /><br />
 
-1. Under the **Import a Product** button, click the **+** sign next to the version number of New Relic Nozzle for VMware Tanzu. This adds the tile to your staging area.
-
-1. Click the newly added **New Relic Nozzle for VMware Tanzu** tile.
-
-1. Follow the steps below to configure the nozzle tile:
-
-    * Under **New Relic Firehose Nozzle > Settings > Assign AZs and Networks:**
-      - Select your desired networks.
-      - Click **Save**.
-    * Under **New Relic Firehose Nozzle > Settings > New Relic Firehose Nozzle**, set the following fields:
-      - New Relic RPM Account ID: `YOUR-NEW-RELIC-RPM-ACCOUNT`
-      - New Relic RPM Account Region: `US` or `EU`. Choose EU if your RPM URL contains .eu
-      - New Relic Insights Insert Key: `YOUR-NEW-RELIC-INSIGHTS-INSERT-KEY`
-      - Firehose Subscription ID: Unique Subscription Identifier (i.e. `newrelic.firehose`)
-      - Nozzle instances: defaults to 2. Specify between 1 to 30 instance(s) depending on the load of Firehose events.
-    * Under **New Relic Firehose Nozzle > Settings > Advanced Settings**, set the following fields:  
-      * If your environment uses a proxy server, add the following environment variables:
-      - Proxy Server Address and Port: `proxy server address:port`
-      - Proxy Bypass: comma-separated list of servers to bypass proxy
-      - Skip SSL Verification (True/False): Whether to verify SSL connection
-      - Selected Events: Comma-separated list of event types
-      - Drain Interval: How often aggregated metric events are sent (Default: 60s)
-      - Firehose -> Reverse Log Proxy Gateway Timeout (minutes): Connection timeout to the RLP Gateway (Default: 16m)
-      - Firehose No Traffic Restart Threshold (seconds): The nozzle will automatically restart if no messages are received in this time period (Default: 15s)
-      - Firehose Queue Buffer Size (messages): Number of messages the nozzle buffer can hold while processing. Also the number of messages that will be dropped if the buffer fills. (Default: 8192)
-      - Log Level: INFO or DEBUG
-      - Tracer (True/False): Activate trace level logging (**extremely** verbose)
-    * Under **New Relic Firehose Nozzle tile > Settings > LogMessage Filters** tab, set the following fields:
-      - Note: Include logic is processed before exclude logic.  If specified, include filters will only generate New Relic events if the include filter is matched.  Exclude filters will exclude matches.
-      - LogMessage Source Include Filter: Comma- or pipe-separated list of log sources to include (optional)
-      - LogMessage Source Exclude Filter: Comma- or pipe-separated list of log sources to exclude (optional)
-      - LogMessage Message Content Include Filter: Comma- or pipe-separated list of log message content to include (optional) (i.e. Including Error,CRASHED would only send LogMessage events that contain Error or CRASHED)
-      - LogMessage Message Content Exclude Filter: Comma- or pipe-separated list of log message content to exclude (optional) 
-  
+    **Note**: include logic is processed before exclude logic. If specified, include filters will only generate New Relic events if the include filter is matched. Exclude filters will exclude matches
 
 ### <a id='obtain-config-values'></a> Where to Obtain Configuration Values
 
-The following properties can be obtained either from VMware Tanzu Application Service for VMs or from New Relic Insights:
+The following properties can be obtained either from the VMware Tanzu Application Service or from New Relic:
 
-     * Firehose Subscription ID: A unique ID (i.e. `newrelic.firehose`)
-     * Skip SSL: If SSL is disabled, this value should be set to `true`.
-     * Selected Events: A comma-separated list of any of the following Firehose event types:
-      - ValueMetric
-      - CounterEvent
-      - ContainerMetric
-      - HttpStartStop
-      - LogMessage
-     * New Relic RPM Account ID: The first number that you find in your RPM Url (i.e. `https://insights.newrelic.com/accounts/RPM-ID/...`)
-     * New Relic Insights Insert Key: An insert key from `https://insights.newrelic.com/accounts/RPM-ID/manage/api_keys`.
-     * Client Id: `Ops Manager -> VMware Tanzu Application Service for VMs -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> identity` </br>(Only for Application push)
-     * Client Secret: `Ops Manager -> VMware Tanzu Application Service for VMs -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> password` </br>(Only for Application push)
-     * API URL: `https://api.YOUR-PCF-DOMAIN`  --  `cf curl /v2/info` </br>(Only for Application push)
-     * UAA URL: `https://uaa.YOUR-PCF-DOMAIN`  --  `cf curl /v2/info` </br>(Only for Application push)
-     * API User Name: If using admin account - `Ops Manager -> VMware Tanzu Application Service for VMs -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> identity` </br>(Only for Application push)
-     * API Password: If using admin account - `Ops Manager -> VMware Tanzu Application Service for VMs -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> password` </br>(Only for Application push)
-  
-1. As an admin user in the New Relic UI, you can go to **New Relic Insights > Manage Data > API Keys** to obtain an insert key. If you have an existing key, you can use it. If you do not already have one, you can create a fresh insert key specifically for this purpose.
+* Firehose Subscription ID: a unique ID (i.e. `newrelic.firehose`)
+* Skip SSL: if SSL is disabled, this value should be set to `true`.
+* Selected Events: a comma-separated list of any of the following Firehose event types:
+  - `ValueMetric`
+  - `CounterEvent`
+  - `ContainerMetric`
+  - `HttpStartStop`
+  - `LogMessage`
+* New Relic RPM Account ID: the first number that you find in your RPM Url (i.e. `https://insights.newrelic.com/accounts/RPM-ID/...`)
+* New Relic Insights Insert Key: an insert key from `https://insights.newrelic.com/accounts/RPM-ID/manage/api_keys`.
+* Client Id: `Ops Manager -> VMware Tanzu Application Service -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> identity` </br>(Only for Application push)
+* Client Secret: `Ops Manager -> VMware Tanzu Application Service -> Credentials -> Job -> UAA -> Opentsdb Nozzle Credentials -> Link to Credential -> password` </br>(Only for Application push)
+* API URL: `https://api.YOUR-PCF-DOMAIN`  --  `cf curl /v2/info` </br>(Only for Application push)
+* UAA URL: `https://uaa.YOUR-PCF-DOMAIN`  --  `cf curl /v2/info` </br>(Only for Application push)
+* API User Name: if using admin account - `Ops Manager -> VMware Tanzu Application Service -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> identity` </br>(Only for Application push)
+* API Password: if using admin account - `Ops Manager -> VMware Tanzu Application Service -> Credentials -> Job -> UAA -> Admin Credentials -> Link to Credential -> password` </br>(Only for Application push)
 
-1. Click **Save**. 
+To obtain the properties: 
 
-1. Return to the Ops Manager Installation Dashboard and click **Apply Changes**.
+1. Go to **New Relic Insights > Manage Data > API Keys** as an admin user. 
+2. Copy an existing insert key or create a new one, save it, and copy it.
+3. Return to the Ops Manager Installation Dashboard and paste the insert key.
+4. Click **Apply Changes**.
 
+## <a id='install-app'></a> Install as an Application
 
-## <a id='install-app'></a> Install and Configure New Relic Nozzle for VMware Tanzu as an Application
-
-When pushing New Relic Nozzle for VMware Tanzu as an application, you need to have a manifest with the following properties:
+When pushing New Relic Nozzle for VMware Tanzu as an application, you must have a manifest with the following properties:
 
 ```
 applications:
@@ -137,12 +133,11 @@ applications:
 
 <p class="note"><strong>Note:</strong> In order to automate the <code>cf push</code> deployment process as much as possible, create an application <code>manifest.yml</code> file. Update the manifest as required for your environment. Make sure to assign proper values to all required environment variables. Any property values within angle brackets must be changed to the correct values for your environment.</p>
 
-<p class="note"><strong>Note:</strong> Make sure to build the nozzle binary in <strong>"dist"</strong> subdirectory (using the build command below), so that when you push the app, the source and rest of the unnecessary files/folders do not get pushed into the container.</p>
-
+<p class="note"><strong>Note:</strong> Make sure to build the nozzle binary in <code>dist</code> subdirectory (using the build command below), so that when you push the app, the source and rest of the unnecessary files/folders do not get pushed into the container.</p>
 
 ### <a id='create-client-secret'></a> Adding a Client, Granting Permissions, and Setting a Secret
 
-This example creates a new client and grants the necessary UAA permissions. A default client is used when the nozzle is deployed as a tile and these steps are not necessary. The Opentsdb Nozzle Credentials can also be retrieved and used instead of creating a custom client.
+This example creates a new client and grants the necessary UAA permissions. A default client is used when the nozzle is deployed as a tile and these steps are not necessary. The OpenTSDB Nozzle Credentials can also be retrieved and used instead of creating a custom client.
 
 ```
 uaac target https://uaa.[your cf system domain]
@@ -154,22 +149,12 @@ uaac client add firehose-to-newrelic \
   --authorities doppler.firehose,cloud_controller.admin_read_only
   --scope doppler.firehose
 ```
-* UAA Client ID would be firehose-to-newrelic
-* UAA Client Secret would be the value set with --secret
-
+* UAA Client ID would be `firehose-to-newrelic`
+* UAA Client Secret would be the value set with `--secret`
 
 ### <a id='app-build'></a> Application Build and Deploy
 
-The application is already built and ready to run on VMware Tanzu. If you make any changes to the code, or would like to run on other operating systems, you can rebuild the binary.
-
-1. Edit the `GOOS` AND `GOARCH` variables in `release.sh`.
-1. Execute `release.sh`
-1. Retrieve the updated binary from the dist directory.
-
-You can obtain a complete list of valid `GOOS` and `GOARCH` types from [Go Lang docs](https://golang.org/doc/install/source).
-
-Once you build the binary and update the `manifest.yml` file with proper values, you can `cf push` the tile as an application.
-
+If you make any changes to the code, or would like to run on other operating systems, you can clone the code from [GitHub](https://github.com/newrelic/newrelic-pcf-nozzle-tile/) and follow the building and deploy steps from the [README file](https://github.com/newrelic/newrelic-pcf-nozzle-tile/README.md).
 
 ## <a id='using-proxy'></a> Using Proxy Servers
 
@@ -178,10 +163,10 @@ If you need to use a proxy server in your environment, use the following environ
 * `http_proxy`
 * `no_proxy`
 
-You can specify the values for these properties during the setup of the tile in Ops Manager. If you use the app version of the Nozzle (running by `cf push`), you can set these environment variables at the end of the manifest.yml in the **env** section, or you can set them directly by running `cf set-env` as a CLI command.
+You can specify the values for these properties during the setup of the tile in Ops Manager. If you use the app version of the nozzle, you can set these environment variables at the end of the `manifest.yml` in the **env** section, or set them directly by running `cf set-env`.
 
 ### <a id='notes'></a> Notes
-   
-* These environment variables must be in lower case.
-* You must set `http_proxy` to your proxy server address and port (i.e. `http://my_proxyserver:my_proxy_port`).
-* You must set `no_proxy` to any address that you need to bypass. In order for the nozzle to work properly with proxies, you must bypass the `doppler` server (`doppler.YOUR-VMware Tanzu-DOMAIN.com`). Make sure you do not include the protocol and the port for `no_proxy`. Just add the server name.
+
+* Environment variables must be written in lower case.
+* You must set `http_proxy` to your proxy server address and port (for example, `http://my_proxyserver:my_proxy_port`).
+* You must set `no_proxy` to any address that you need to bypass. For the nozzle to work properly with proxies, you must bypass the `doppler` server (`doppler.YOUR-VMware Tanzu-DOMAIN.com`). Make sure not to include the protocol and the port for `no_proxy`; just add the server name.
