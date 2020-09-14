@@ -5,6 +5,17 @@ owner: Partners
 
 These are release notes for New Relic Nozzle for VMware Tanzu.
 
+## <a id="ver-2.5.14"></a> v2.5.14
+
+**General Availability Release Date:** September 14, 2020
+
+Features included in this release:
+
+* Removes PCFCapacity Events since is processing the envelopes of ValueMetrics twice and is not working properly in a multi instance environment.
+* Makes cache write buff to be configurable.
+* Makes cache update interval configurable.
+* Launches updateIntances in the Cache in a non Locking way for the write buffer.
+
 ## <a id="ver-2.5.12"></a> v2.5.12
 
 **General Availability Release Date:** August 27, 2020
