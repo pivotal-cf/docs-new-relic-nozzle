@@ -16,7 +16,7 @@ Furthermore, if you would like to see the performance of one application contain
 
 ## <a id='insights-queries'></a> Sample Queries
 
-**Multiple Event types** are now used to store Firehose events, including `PCFCapacity`, `PCFContainerMetric`, `PCFCounterEvent`, `PCFHttpStartStop`, `PCFLogMessage`, and `PCFValueMetric`. 
+**Multiple Event types** are now used to store Firehose events, including `PCFContainerMetric`, `PCFCounterEvent`, `PCFHttpStartStop`, `PCFLogMessage`, and `PCFValueMetric`. 
 
 The following are some NRQL strings that can be used to extract events and metrics:
 
@@ -57,7 +57,7 @@ SELECT average(metric.sum/metric.samples.count) FROM PCFContainerMetric WHERE me
 SELECT count(*) FROM PCFHttpStartStop FACET http.status
 ```
 
-Events from all PCF deployments end up in `PCFCapacity`, `PCFContainerMetric`, `PCFCounterEvent`, `PCFHttpStartStop`, `PCFLogMessage`, and `PCFValueMetric`. 
+Events from all PCF deployments end up in `PCFContainerMetric`, `PCFCounterEvent`, `PCFHttpStartStop`, `PCFLogMessage`, and `PCFValueMetric`. 
 
 If you collect events from multiple PCF environments, use `pcf.domain` and `pcf.IP** metrics` to distunguish between events from different PCF deploments (either in a `WHERE` clause or by `FACET`ing the events by `pcf.domain`).
 
