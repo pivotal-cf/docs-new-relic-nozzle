@@ -5,6 +5,19 @@ owner: Partners
 
 These are release notes for New Relic Nozzle for VMware Tanzu.
 
+## <a id="ver-2.5.15"></a> v2.5.15
+
+**General Availability Release Date:** September 30, 2020
+
+Features included in this release:
+
+* Fix: race condition possibly issuing more than one request per app to the API
+* Feat: when calling the API a less expensive method is called
+* Feat: different instances of the nozzle timeout cache at different moment in time
+* Feat: now cache timeout is configurable with the parameter nrf_firehose_cache_duration_mins
+
+This release fixes know issues related to the cache perfomance found in versions > 2.5.4
+
 ## <a id="ver-2.5.14"></a> v2.5.14
 
 **General Availability Release Date:** September 14, 2020
