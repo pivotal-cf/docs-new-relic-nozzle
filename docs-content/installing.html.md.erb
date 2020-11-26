@@ -27,6 +27,8 @@ Change the following settings to configure the nozzle tile:
   - Nozzle instances: specify between 1 to 30 instance(s) depending on the load of Firehose events. Default is 2.
 * Under **New Relic Firehose Nozzle > Settings > Advanced Settings**:  
   - Skip SSL Verification (True/False): whether to verify SSL connection
+  - Enable New Relic Logs - HttpStartStop: Send HttpStartStop (Timer) envelopes to New Relic Logs (boolean true/false)
+  - Enable New Relic Logs - LogMessage: Send LogMessage envelopes to New Relic Logs (boolean true/false)
   - Selected Events: comma-separated list of event types
   - Drain Interval: how often aggregated metric events are sent (Default: 60s)
   - Firehose -> Reverse Log Proxy Gateway Timeout (minutes): connection timeout to the RLP Gateway (Default: 16m)
@@ -119,6 +121,11 @@ applications:
       # NRF_LOG_LEVEL: INFO
       # # Trace level logging (extremely verbose)
       # NRF_TRACER: false
+
+      # # Send HttpStartStop envelopes to New Relic Logs
+      # NRF_LOGS_HTTP: false
+      # # Send LogMessage envelopes to New Relic Logs
+      # NRF_LOGS_LOGMESSAGE: false
 
       # # LogMessage filters (| separated values)
       # NRF_LOGMESSAGE_SOURCE_INCLUDE: ""
